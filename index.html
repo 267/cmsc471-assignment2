@@ -9,13 +9,22 @@
 </head>
 
 <body>
+  <div id="tooltip" style="display: none"></div>
   <div class="container">
+    <p id="value"></p>
     <h1>CMSC471 Assignment 2</h1>
+    <div id="controls">
+      <div id="slider"></div>
+      X: <select id="xVariable" class="variable"></select>
+      Y: <select id="yVariable" class="variable"></select>
+      State: <input type="text" id="stateVariable" class="variable" placeholder="HELL YEAH BROTHER"></select>
+    </div>
     <div id="vis"></div>
   </div>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js" type="module"></script>
+  <script src="https://unpkg.com/d3-simple-slider"></script>
 </body>
 
 </html>
