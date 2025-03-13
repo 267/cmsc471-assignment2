@@ -145,7 +145,7 @@ function update() {
     .attr("x", width / 2)
     .attr("y", height + margin.bottom - 20)
     .attr("text-anchor", "middle")
-    .text(xVar)
+    .text(options[xVar])
     .attr("class", "labels");
 
   svg
@@ -154,7 +154,7 @@ function update() {
     .attr("x", -height / 2)
     .attr("y", -margin.left + 40)
     .attr("text-anchor", "middle")
-    .text(yVar)
+    .text(options[yVar])
     .attr("class", "labels");
 
   svg
