@@ -25,8 +25,8 @@ const data = await d3.csv("weather.csv", (d) => ({
   precipitation: parseFloat(d.PRCP),
 }));
 
-let xVar = "tempMin";
-let yVar = "tempMax";
+let xVar = "tempAvg";
+let yVar = "avgWind";
 let state = "MD";
 let xScale;
 let yScale;
