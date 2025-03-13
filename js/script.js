@@ -52,26 +52,6 @@ data.forEach((d) => {
 
 console.log(data.map((d) => d.month));
 
-let slider = d3
-  .sliderHorizontal()
-  .min(d3.min(data, (d) => +d.year))
-  .max(d3.max(data, (d) => +d.year))
-  .step(1)
-  .width(width)
-  .displayValue(true)
-  .default(1)
-  .on("onchange", (val) => {
-    targetYear = +val;
-    update(); // nothing yet
-  });
-d3.select("#slider")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", 70)
-  .append("g")
-  .attr("transform", "translate(20, 20)")
-  .call(slider);
-
 d3.selectAll(".variable")
   .each(function () {
     d3.select(this)
@@ -157,6 +137,15 @@ function update() {
     .text(options[yVar])
     .attr("class", "labels");
 
+
+  const colors = (x) => {
+    if(x <= 32) return "#0000FF";
+    if(x <= 50) return "#90d5ff";
+    if(x <= 65) return "#ff8080";
+    if(x <= 85) return "#ab2e2e";
+    if(x > 85) return "#ff0303";
+  };
+
   svg
     .selectAll(".points")
     .data(currentData, (d) => d)
@@ -167,7 +156,7 @@ function update() {
           .attr("class", "points")
           .attr("cx", (d) => xScale(d[xVar]))
           .attr("cy", (d) => yScale(d[yVar]))
-          .style("fill", "#61afef")
+          .style("fill", (d) => colors(d.tempAvg))
           .style("opacity", 0.5)
           .style("stroke", "black")
           .style("stroke-width", "0")
@@ -204,7 +193,8 @@ function update() {
           .transition(t)
           .attr("cx", (d) => xScale(d[xVar]))
           .attr("cy", (d) => yScale(d[yVar]))
-          .attr("r", 5),
+          .attr("r", 5)
+          .style("fill", (d) => colors(d.tempAvg)),
       (exit) => exit.transition(t).attr("r", 0).remove(),
     );
 }
