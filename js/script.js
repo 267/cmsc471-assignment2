@@ -45,32 +45,32 @@ const options = {
 
 const parseDate = d3.timeParse("%Y%m%d");
 
-data.forEach(d => {
+data.forEach((d) => {
   const parsedDate = parseDate(d.date);
   d.month = parsedDate.getMonth() + 1;
 });
 
-console.log(data.map(d => d.month));
+console.log(data.map((d) => d.month));
 
 let slider = d3
-    .sliderHorizontal()
-    .min(d3.min(data, d => +d.year))
-    .max(d3.max(data, d => +d.year))
-    .step(1)
-    .width(width)
-    .displayValue(true)
-    .default(1)
-    .on('onchange', (val) => {
-      targetYear = +val
-      update() // nothing yet 
-    });
+  .sliderHorizontal()
+  .min(d3.min(data, (d) => +d.year))
+  .max(d3.max(data, (d) => +d.year))
+  .step(1)
+  .width(width)
+  .displayValue(true)
+  .default(1)
+  .on("onchange", (val) => {
+    targetYear = +val;
+    update(); // nothing yet
+  });
 d3.select("#slider")
   .append("svg")
   .attr("width", width)
   .attr("height", 70)
   .append("g")
   .attr("transform", "translate(20, 20)")
-  .call(slider)
+  .call(slider);
 
 d3.selectAll(".variable")
   .each(function () {
@@ -107,13 +107,18 @@ function update() {
     (d) => d.state == state && !isNaN(d[xVar]) && !isNaN(d[yVar]),
   );
 
-
   svg.selectAll(".axis").remove();
   svg.selectAll(".labels").remove();
 
   xScale = d3
     .scaleLinear()
-    .domain([0, d3.max(currentData, (d) => d[xVar])])
+    .domain([
+      Math.min(
+        0,
+        d3.min(currentData, (d) => d[xVar]),
+      ),
+      d3.max(currentData, (d) => d[xVar]),
+    ])
     .range([0, width]);
   const xAxis = d3.axisBottom(xScale);
   svg
@@ -124,7 +129,13 @@ function update() {
 
   yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(currentData, (d) => d[yVar])])
+    .domain([
+      Math.min(
+        0,
+        d3.min(currentData, (d) => d[yVar]),
+      ),
+      d3.max(currentData, (d) => d[yVar]),
+    ])
     .range([height, 0]);
   const yAxis = d3.axisLeft(yScale);
   svg.append("g").attr("class", "axis").call(yAxis);
@@ -160,10 +171,10 @@ function update() {
           .style("opacity", 0.5)
           .style("stroke", "black")
           .style("stroke-width", "0")
-          .on('mouseover', function(event, d) {
+          .on("mouseover", function (event, d) {
             d3.select("#tooltip")
               .style("display", "block")
-              .html (
+              .html(
                 `<strong>Weather station: ${d.station}</strong><br/>
                  Average wind speed: ${d.avgWind}<br>
                  Latitude: ${d.latitude} <br>
@@ -173,19 +184,17 @@ function update() {
                  Maximum temperature: ${d.tempMax} <br>
                  Average temperature: ${d.tempAvg} <br>
                  Snow: ${d.snow} <br>
-                 Precipitation: ${d.precipitation}`
+                 Precipitation: ${d.precipitation}`,
               )
-              .style("left", (event.pageX + 20) + "px")
-              .style("top", (event.pageY - 28) + "px");
+              .style("left", event.pageX + 20 + "px")
+              .style("top", event.pageY - 28 + "px");
             d3.select(this)
-              .style('strong', 'black')
-              .style('stroke-width', '4px')
+              .style("strong", "black")
+              .style("stroke-width", "4px");
           })
-          .on("mouseout", function(event, d) {
-            d3.select('#tooltip')
-              .style('display', 'none')
-            d3.select(this)
-              .style('stroke', 'none')
+          .on("mouseout", function (event, d) {
+            d3.select("#tooltip").style("display", "none");
+            d3.select(this).style("stroke", "none");
           })
           .attr("r", 0)
           .transition(t)
