@@ -76,7 +76,7 @@ update();
 function update() {
   const t = 1000;
   const currentData = data.filter(
-    (d) => d.state == state && !isNaN(d[xVar]) && !isNaN(d[yVar]),
+    (d) => d.state == state && !isNaN(d[xVar]) && !isNaN(d[yVar])
   );
 
   svg.selectAll(".axis").remove();
@@ -87,7 +87,7 @@ function update() {
     .domain([
       Math.min(
         0,
-        d3.min(currentData, (d) => d[xVar]),
+        d3.min(currentData, (d) => d[xVar])
       ),
       d3.max(currentData, (d) => d[xVar]),
     ])
@@ -104,7 +104,7 @@ function update() {
     .domain([
       Math.min(
         0,
-        d3.min(currentData, (d) => d[yVar]),
+        d3.min(currentData, (d) => d[yVar])
       ),
       d3.max(currentData, (d) => d[yVar]),
     ])
@@ -164,7 +164,7 @@ function update() {
                  Maximum temperature: ${d.tempMax} <br>
                  Average temperature: ${d.tempAvg} <br>
                  Snow: ${d.snow} <br>
-                 Precipitation: ${d.precipitation}`,
+                 Precipitation: ${d.precipitation}`
               )
               .style("left", event.pageX + 20 + "px")
               .style("top", event.pageY - 28 + "px");
@@ -186,6 +186,6 @@ function update() {
           .attr("cy", (d) => yScale(d[yVar]))
           .attr("r", 5)
           .style("fill", (d) => colors(d.tempAvg)),
-      (exit) => exit.transition(t).attr("r", 0).remove(),
+      (exit) => exit.transition(t).attr("r", 0).remove()
     );
 }
