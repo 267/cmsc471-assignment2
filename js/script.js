@@ -10,21 +10,6 @@ const svg = d3
   .append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const data = await d3.csv("weather.csv", (d) => ({
-  station: d.station,
-  state: d.state,
-  latitude: parseFloat(d.latitude),
-  longitude: parseFloat(d.longitude),
-  elevation: parseFloat(d.elevation),
-  date: parseFloat(d.date),
-  tempMin: parseFloat(d.TMIN),
-  tempMax: parseFloat(d.TMAX),
-  tempAvg: parseFloat(d.TAVG),
-  avgWind: parseFloat(d.AWND),
-  snow: parseFloat(d.SNOW),
-  precipitation: parseFloat(d.PRCP),
-}));
-
 let xVar = "tempAvg";
 let yVar = "avgWind";
 let state = "MD";
@@ -42,15 +27,6 @@ const options = {
   snow: "Snow",
   precipitation: "Precipitation",
 };
-
-const parseDate = d3.timeParse("%Y%m%d");
-
-data.forEach((d) => {
-  const parsedDate = parseDate(d.date);
-  d.month = parsedDate.getMonth() + 1;
-});
-
-console.log(data.map((d) => d.month));
 
 d3.selectAll(".variable")
   .each(function () {
@@ -79,6 +55,22 @@ d3.selectAll(".variable")
 d3.select("#xVariable").property("value", xVar);
 d3.select("#yVariable").property("value", yVar);
 d3.select("#stateVariable").property("value", state);
+
+const data = await d3.csv("weather.csv", (d) => ({
+  station: d.station,
+  state: d.state,
+  latitude: parseFloat(d.latitude),
+  longitude: parseFloat(d.longitude),
+  elevation: parseFloat(d.elevation),
+  date: parseFloat(d.date),
+  tempMin: parseFloat(d.TMIN),
+  tempMax: parseFloat(d.TMAX),
+  tempAvg: parseFloat(d.TAVG),
+  avgWind: parseFloat(d.AWND),
+  snow: parseFloat(d.SNOW),
+  precipitation: parseFloat(d.PRCP),
+}));
+
 update();
 
 function update() {
@@ -137,13 +129,12 @@ function update() {
     .text(options[yVar])
     .attr("class", "labels");
 
-
   const colors = (x) => {
-    if(x <= 32) return "#0000FF";
-    if(x <= 50) return "#90d5ff";
-    if(x <= 65) return "#ff8080";
-    if(x <= 85) return "#ab2e2e";
-    if(x > 85) return "#ff0303";
+    if (x <= 32) return "#0000FF";
+    if (x <= 50) return "#90d5ff";
+    if (x <= 65) return "#ff8080";
+    if (x <= 85) return "#ab2e2e";
+    if (x > 85) return "#ff0303";
   };
 
   svg
